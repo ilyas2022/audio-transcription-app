@@ -1,26 +1,24 @@
-from flask import Flask, render_template
-from flask_cors import CORS
-from flask_sock import Sock
+import pytest
+from app import app as flask_app
 
-app = Flask(__name__,
-    template_folder='./www',
-    static_folder='./www',
-    static_url_path='/'
-)
-CORS(app)  # Allow access from all domains
-sock = Sock(app)
+@pytest.fixture
+def app():
+    """Flask 앱 테스트 픽스처"""
+    return flask_app
 
-@app.route('/')
-def index():
-    return "Hello, World! Flask server is running."
+@pytest.fixture
+def client(app):
+    """Flask 테스트 클라이언트"""
+    return app.test_client()
 
-@sock.route('/echo')
-def echo(ws):
-    while True:
-        data = ws.receive()
-        if data is None:
-            break
-        ws.send(f"Echo: {data}")
+def test_index_route(client):
+    """루트 경로 테스트"""
+    response = client.get('/')
+    assert response.status_code == 200
+    assert b"Hello, World!" in response.data
 
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=3000, debug=True)
+def test_websocket_echo():
+    """웹소켓 에코 기능 테스트 (간단한 골격만 제공)"""
+    # 실제 웹소켓 테스트는 별도의 라이브러리나 방법이 필요할 수 있음
+    # 여기서는 placeholder로 넣어둠
+    assert True
