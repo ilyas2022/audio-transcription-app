@@ -1,0 +1,14 @@
+{
+  "devDependencies": {
+    "cypress": "^9.7.0"
+  }
+"scripts": {
+  "start": "react-scripts start",
+  "build": "react-scripts build",
+  "test": "react-scripts test",
+  "eject": "react-scripts eject",
+  "cy:open": "cypress open",
+  "cy:run": "cypress run"
+}
+}
+
